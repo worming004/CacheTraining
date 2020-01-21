@@ -3,13 +3,13 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace CacheTraining.Logic
 {
-    public class PersonCacheDecorator : IPersonGetter
+    public class PersonCacheDecoratorTryGetValue : IPersonGetter
     {
 
         private MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
         private IPersonGetter _getter;
 
-        public PersonCacheDecorator(IPersonGetter getter)
+        public PersonCacheDecoratorTryGetValue(IPersonGetter getter)
         {
             _getter = getter;
         }

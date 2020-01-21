@@ -55,9 +55,21 @@ namespace CacheTraining.Test
         }
 
         [Fact]
-        public void CacheFlow()
+        public void CacheTryGetFlow()
         {
-            var cache = new PersonCacheDecorator(getter);
+            var cache = new PersonCacheDecoratorTryGetValue(getter);
+            CacheFlow(cache);
+        }
+
+        [Fact]
+        public void CacheGetOrCreateFlow()
+        {
+            var cache = new PersonCacheDecoratorGetOrCreate(getter);
+            CacheFlow(cache);
+        }
+
+        private void CacheFlow(IPersonGetter cache)
+        {
             setter.Store(defaultPerson);
             cache.GetPerson(defaultPerson.Id);
             setter.CleanUp();
