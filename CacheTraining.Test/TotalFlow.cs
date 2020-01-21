@@ -11,10 +11,12 @@ namespace CacheTraining.Test
         private PersonFileGetter getter;
         private Person defaultPerson;
 
-        public TotalFlow(){
+        public TotalFlow()
+        {
             setter = new PersonFileSetter();
             getter = new PersonFileGetter();
-            defaultPerson = new Person{
+            defaultPerson = new Person
+            {
                 Id = 1,
                 Name = "Mathieu",
                 LastName = "Scolas"
@@ -33,16 +35,19 @@ namespace CacheTraining.Test
         }
 
         [Fact]
-        public void CleanFlow() {
+        public void CleanFlow()
+        {
             setter.Store(defaultPerson);
             setter.CleanUp();
 
-            try{
-            getter.GetPerson(defaultPerson.Id);
-            Assert.True(false, "should fail");
+            try
+            {
+                getter.GetPerson(defaultPerson.Id);
+                Assert.True(false, "should fail");
             }
-            catch (NotFoundException) {}
-            catch (Exception) {
+            catch (NotFoundException) { }
+            catch (Exception)
+            {
                 Assert.True(false, "should fail with another exception");
             }
 
@@ -50,11 +55,22 @@ namespace CacheTraining.Test
         }
 
         [Fact]
-        public void CacheFlow() {
+        public void CacheFlow()
+        {
             var cache = new PersonCacheDecorator(getter);
             setter.Store(defaultPerson);
             cache.GetPerson(defaultPerson.Id);
             setter.CleanUp();
+
+            try
+            {
+                getter.GetPerson(defaultPerson.Id);
+            }
+            catch (NotFoundException) { }
+            catch (Exception)
+            {
+                Assert.True(false, "should fail with another exception");
+            }
             var p = cache.GetPerson(defaultPerson.Id);
             Assert.Equal(p.LastName, defaultPerson.LastName);
         }
